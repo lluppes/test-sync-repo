@@ -11,7 +11,9 @@
 #     gh variable set SYNC_DESTINATION_REPO_NAME -b your-target-repo-name
 #     gh secret set SYNC_DESTINATION_PAT -b your-personal-access-token
 # ------------------------------------------------------------------------------------------------------------------------
-# Reference: https://medium.com/@saad-awais/sync-one-repository-with-another-using-github-actions-1f349eed5173
+# References:
+#   https://medium.com/@saad-awais/sync-one-repository-with-another-using-github-actions-1f349eed5173
+#   https://www.howtogeek.com/devops/how-to-use-git-with-multiple-remote-repositories/
 # ------------------------------------------------------------------------------------------------------------------------
 name: 99.sync.repo
 run-name: '99 - Sync to destination repo by @${{ github.actor }}'
@@ -48,8 +50,8 @@ jobs:
           echo "Run: cd main"
           cd main
 
-          echo "Run: git remote add destination https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git"
-          git remote add destination https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
+          echo "Run: git remote add destination https://${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git"
+          git remote add destination https://${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git
 
           echo "Run: git push destination main"
           git push destination main
@@ -57,6 +59,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SYNC_DESTINATION_PAT }}
           ORIGINAL_REPO_NAME: ${{ github.event.repository.name }}
           ORIGINAL_ORG_NAME: ${{ github.event.repository.owner.login }}
+
+# echo "Run: git remote add destination https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git"
+# git remote add destination https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
 
 # echo "Run: git remote set-url --add --push origin git://${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git"
 # git remote set-url --add --push origin git://${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git
