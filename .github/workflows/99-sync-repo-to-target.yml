@@ -46,20 +46,20 @@ jobs:
           git config --global user.email "your email"
           git config --global user.name "your user name"
 
-          echo ##[command] cd main
+          echo "Run: cd main"
           cd main
 
-          echo ##[command] git remote add destination https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
+          echo "Run: git remote add destination https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git"
           git remote add destination https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
 
-          echo ##[command] git push destination main
+          echo "Run: git push destination main"
           git push destination main
         env:
           GITHUB_TOKEN: ${{ secrets.SYNC_DESTINATION_PAT }}
           ORIGINAL_REPO_NAME: ${{ github.event.repository.name }}
           ORIGINAL_ORG_NAME: ${{ github.event.repository.owner.login }}
 
-          # echo ##[command] cd ${{ github.workspace }}/${{ github.event.repository.name }}
+          # echo "Run: cd ${{ github.workspace }}/${{ github.event.repository.name }}
           # cd ${{ github.workspace }}/${{ github.event.repository.name }}
 # git clone https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git
 # git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ github.event.repository.name }}.git
