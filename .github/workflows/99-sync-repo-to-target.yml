@@ -33,8 +33,8 @@ jobs:
           echo "Sync Destination Org Name: ${{ vars.SYNC_DESTINATION_ORG_NAME }}"
           echo "Sync Destination Repo Name: ${{ vars.SYNC_DESTINATION_REPO_NAME }}"
           echo "---------------------------------"
-          echo "##[group]Directory of ${{ github.workspace  }}"
-          tree -R ${{ github.workspace  }}
+          echo "##[group]Directory of ${{ github.workspace }}"
+          tree -R ${{ github.workspace }}
           echo "##[endgroup]"
         continue-on-error: true
                 
@@ -43,8 +43,8 @@ jobs:
           git config --global user.email "your email"
           git config --global user.name "your user name"
 
-          echo ##[command] cd ${{ github.event.repository.name }}
-          cd ${{ github.event.repository.name }}
+          echo ##[command] cd ${{ github.workspace }}/${{ github.event.repository.name }}
+          cd ${{ github.workspace }}/${{ github.event.repository.name }}
 
           echo ##[command] git remote add origin https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
           git remote add origin https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
