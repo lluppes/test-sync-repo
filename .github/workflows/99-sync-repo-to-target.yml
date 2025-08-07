@@ -9,6 +9,8 @@
 #   Sample Commands:
 #     gh variable set SYNC_DESTINATION_ORG_NAME -b your-target-org-name
 #     gh variable set SYNC_DESTINATION_REPO_NAME -b your-target-repo-name
+#     gh variable set SYNC_DESTINATION_USER_EMAIL -b your-email@example.com
+#     gh variable set SYNC_DESTINATION_USER_NAME -b your-user-name
 #     gh secret set SYNC_DESTINATION_PAT -b your-personal-access-token
 # ------------------------------------------------------------------------------------------------------------------------
 # References:
@@ -44,8 +46,8 @@ jobs:
                 
       - name: Push to destination repository
         run: |
-          git config --global user.email "your email"
-          git config --global user.name "your user name"
+          git config --global user.email "${{ vars.SYNC_DESTINATION_USER_EMAIL }}"
+          git config --global user.name "${{ vars.SYNC_DESTINATION_USER_NAME }}"
 
           echo "Run: cd main"
           cd main
@@ -53,8 +55,8 @@ jobs:
           echo "Run: git remote add destination https://${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git"
           git remote add destination https://${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git
 
-          echo "Run: git push destination main"
-          git push destination main
+          echo "Run: git push destination main -f"
+          git push destination main -f
         env:
           GITHUB_TOKEN: ${{ secrets.SYNC_DESTINATION_PAT }}
           ORIGINAL_REPO_NAME: ${{ github.event.repository.name }}
