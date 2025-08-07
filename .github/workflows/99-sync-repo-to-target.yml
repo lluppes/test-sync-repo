@@ -30,16 +30,22 @@ jobs:
         run: |
           git config --global user.email "your email"
           git config --global user.name "your user name"
-          echo Run: git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
-          git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+
+          echo Run: git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}:${{ secrets.SYNC_SOURCE_PAT }}@github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+          git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}:${{ secrets.SYNC_SOURCE_PAT }}@github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+          
           echo Run: cd ${{ env.ORIGINAL_REPO_NAME }}
           cd ${{ env.ORIGINAL_REPO_NAME }}
+
           echo Run: git remote add ${{ env.ORIGINAL_REPO_NAME }} https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
           git remote add ${{ env.ORIGINAL_REPO_NAME }} https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+
           echo Run: git remote update
           git remote update
+
           echo Run: git merge ${{ env.ORIGINAL_REPO_NAME }}/main
           git merge ${{ env.ORIGINAL_REPO_NAME }}/main
+
           echo Run: git push origin main
           git push origin main
         env:
@@ -48,3 +54,4 @@ jobs:
           ORIGINAL_ORG_NAME: ${{ github.event.repository.owner.login }}
 
 # git clone https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git
+# git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
