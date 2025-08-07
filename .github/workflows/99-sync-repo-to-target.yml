@@ -26,27 +26,30 @@ jobs:
       - name: Checkout source repository
         uses: actions/checkout@v2
 
+      - name: Display Variables and Files
+        run: |-
+          echo "env.generatedAppEnvName=${{ env.generatedAppEnvName }}"
+          echo "Original Repo Name: ${{ github.event.repository.name }}"
+          echo "Sync Destination Org Name: ${{ vars.SYNC_DESTINATION_ORG_NAME }}"
+          echo "Sync Destination Repo Name: ${{ vars.SYNC_DESTINATION_REPO_NAME }}"
+          echo "---------------------------------"
+          echo "##[group]Directory of ${{ github.workspace  }}"
+          tree -R ${{ github.workspace  }}
+          echo "##[endgroup]"
+        continue-on-error: true
+                
       - name: Push to destination repository
         run: |
           git config --global user.email "your email"
           git config --global user.name "your user name"
 
-          echo Run: git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}:${{ secrets.SYNC_SOURCE_PAT }}@${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
-          git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}:${{ secrets.SYNC_SOURCE_PAT }}@${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
-          
-          echo Run: cd ${{ env.ORIGINAL_REPO_NAME }}
-          cd ${{ env.ORIGINAL_REPO_NAME }}
+          echo ##[command] cd ${{ github.event.repository.name }}
+          cd ${{ github.event.repository.name }}
 
-          echo Run: git remote add ${{ env.ORIGINAL_REPO_NAME }} https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
-          git remote add ${{ env.ORIGINAL_REPO_NAME }} https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+          echo ##[command] git remote add origin https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
+          git remote add origin https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
 
-          echo Run: git remote update
-          git remote update
-
-          echo Run: git merge ${{ env.ORIGINAL_REPO_NAME }}/main
-          git merge ${{ env.ORIGINAL_REPO_NAME }}/main
-
-          echo Run: git push origin main
+          echo ##[command] git push origin main
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.SYNC_DESTINATION_PAT }}
@@ -54,4 +57,4 @@ jobs:
           ORIGINAL_ORG_NAME: ${{ github.event.repository.owner.login }}
 
 # git clone https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git
-# git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+# git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ github.event.repository.name }}.git
