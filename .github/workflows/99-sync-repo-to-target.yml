@@ -30,9 +30,9 @@ jobs:
         run: |
           git config --global user.email "your email"
           git config --global user.name "your user name"
-          git clone https://${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+          git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
           cd ${{ env.ORIGINAL_REPO_NAME }}
-          git remote add ${{ env.ORIGINAL_REPO_NAME }} https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+          git remote add ${{ env.ORIGINAL_REPO_NAME }} https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
           git remote update
           git merge ${{ env.ORIGINAL_REPO_NAME }}/main
           git push origin main
