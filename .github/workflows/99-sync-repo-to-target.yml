@@ -25,6 +25,9 @@ jobs:
     steps:
       - name: Checkout source repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetch all history for all tags and branches
+          path: main
 
       - name: Display Variables and Files
         run: |-
@@ -43,8 +46,8 @@ jobs:
           git config --global user.email "your email"
           git config --global user.name "your user name"
 
-          echo ##[command] cd ${{ github.workspace }}/${{ github.event.repository.name }}
-          cd ${{ github.workspace }}/${{ github.event.repository.name }}
+          echo ##[command] cd main
+          cd main
 
           echo ##[command] git remote add origin https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
           git remote add origin https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
@@ -56,5 +59,7 @@ jobs:
           ORIGINAL_REPO_NAME: ${{ github.event.repository.name }}
           ORIGINAL_ORG_NAME: ${{ github.event.repository.owner.login }}
 
+          # echo ##[command] cd ${{ github.workspace }}/${{ github.event.repository.name }}
+          # cd ${{ github.workspace }}/${{ github.event.repository.name }}
 # git clone https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git
 # git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ github.event.repository.name }}.git
