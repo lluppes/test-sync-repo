@@ -1,0 +1,41 @@
+# ------------------------------------------------------------------------------------------------------------------------
+# This action will make a COPY of this repo in another destination repo, currently on-demand only
+# ------------------------------------------------------------------------------------------------------------------------
+# To configure this, set the following variables in your GitHub environment or repo settings:
+#   1. Create a variable named SYNC_DESTINATION_ORG_NAME 
+#   2. Create a variable named SYNC_DESTINATION_REPO_NAME
+#   3. Go into your target repo settings and create a Personal Access Token (PAT) with repo permissions
+#   4. Create a secret named SYNC_DESTINATION_PAT
+#   Sample Commands:
+#     gh variable set SYNC_DESTINATION_REPO_NAME -b your-target-repo-name
+#     gh variable set SYNC_DESTINATION_ORG_NAME -b your-target-org-name
+#     gh secret set SYNC_DESTINATION_PAT -b your-personal-access-token
+# ------------------------------------------------------------------------------------------------------------------------
+# Reference: https://medium.com/@saad-awais/sync-one-repository-with-another-using-github-actions-1f349eed5173
+# ------------------------------------------------------------------------------------------------------------------------
+name: 99.sync.repo
+run-name: '99 - Sync to destination repo by @${{ github.actor }}'
+
+on: workflow_dispatch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v2
+
+      - name: Push to destination repository
+        run: |
+          git config --global user.email "your email"
+          git config --global user.name "your user name"
+          git clone https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ vars.SYNC_DESTINATION_REPO_NAME }}.git
+          cd ${{ vars.SYNC_DESTINATION_REPO_NAME }}
+          git remote add ${{ env.ORIGINAL_REPO_NAME }} https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+          git remote update
+          git merge ${{ env.ORIGINAL_REPO_NAME }}/main
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.SYNC_DESTINATION_PAT }}
+          ORIGINAL_REPO_NAME: ${{ github.event.repository.name }}
