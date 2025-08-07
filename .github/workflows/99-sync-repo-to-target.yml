@@ -49,11 +49,11 @@ jobs:
           echo ##[command] cd main
           cd main
 
-          echo ##[command] git remote add origin https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
-          git remote add origin https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
+          echo ##[command] git remote add destination https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
+          git remote add destination https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
 
-          echo ##[command] git push origin main
-          git push origin main
+          echo ##[command] git push destination main
+          git push destination main
         env:
           GITHUB_TOKEN: ${{ secrets.SYNC_DESTINATION_PAT }}
           ORIGINAL_REPO_NAME: ${{ github.event.repository.name }}
