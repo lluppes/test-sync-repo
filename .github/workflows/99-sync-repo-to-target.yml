@@ -31,7 +31,6 @@ jobs:
 
       - name: Display Variables and Files
         run: |-
-          echo "env.generatedAppEnvName=${{ env.generatedAppEnvName }}"
           echo "Original Repo Name: ${{ github.event.repository.name }}"
           echo "Sync Destination Org Name: ${{ vars.SYNC_DESTINATION_ORG_NAME }}"
           echo "Sync Destination Repo Name: ${{ vars.SYNC_DESTINATION_REPO_NAME }}"
@@ -49,8 +48,8 @@ jobs:
           echo "Run: cd main"
           cd main
 
-          echo "Run: git remote add destination https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git"
-          git remote add destination https://${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
+          echo "Run: git remote add destination ${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git"
+          git remote add destination ${{ vars.SYNC_DESTINATION_ORG_NAME }}:${{ secrets.SYNC_DESTINATION_PAT }}@https://github.com/${{ vars.SYNC_DESTINATION_ORG_NAME }}/${{ github.event.repository.name }}.git
 
           echo "Run: git push destination main"
           git push destination main
