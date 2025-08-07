@@ -1,6 +1,11 @@
 # ------------------------------------------------------------------------------------------------------------------------
 # This action will make a COPY of this repo in another destination repo, currently on-demand only
 # ------------------------------------------------------------------------------------------------------------------------
+# These commands work at my command line...
+#  > git remote add destination https://<insert-pat-here>@github.com/lluppes/test-sync-repo.git
+#  > git push destination main -f
+#  > git remote remove destination
+# ------------------------------------------------------------------------------------------------------------------------
 # To configure this, set the following variables in your GitHub environment or repo settings:
 #   1. Create a variable named SYNC_DESTINATION_ORG_NAME 
 #   2. Create a variable named SYNC_DESTINATION_REPO_NAME
@@ -25,7 +30,8 @@ on: workflow_dispatch
 jobs:
   sync:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
       - name: Checkout source repository
         uses: actions/checkout@v2
