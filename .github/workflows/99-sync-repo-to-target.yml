@@ -31,8 +31,8 @@ jobs:
           git config --global user.email "your email"
           git config --global user.name "your user name"
 
-          echo Run: git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}:${{ secrets.SYNC_SOURCE_PAT }}@github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
-          git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}:${{ secrets.SYNC_SOURCE_PAT }}@github.com/${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+          echo Run: git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}:${{ secrets.SYNC_SOURCE_PAT }}@${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
+          git clone https://github.com/${{ env.ORIGINAL_ORG_NAME }}:${{ secrets.SYNC_SOURCE_PAT }}@${{ env.ORIGINAL_ORG_NAME }}/${{ env.ORIGINAL_REPO_NAME }}.git
           
           echo Run: cd ${{ env.ORIGINAL_REPO_NAME }}
           cd ${{ env.ORIGINAL_REPO_NAME }}
